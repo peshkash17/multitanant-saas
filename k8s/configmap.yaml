@@ -6,7 +6,7 @@ metadata:
 data:
   NODE_ENV: production
   PORT: "3000"
-  DB_HOST: db.your-project-ref.supabase.co
+  DB_HOST: aws-0-your-region.pooler.supabase.com
   DB_PORT: "5432"
   DB_NAME: postgres
   DB_SSL: "true"
@@ -16,7 +16,7 @@ data:
   REDIS_USERNAME: default
   REDIS_TLS: "false"
   CACHE_STORE: redis
-  FRONTEND_URL: https://workspace.example.com
+  FRONTEND_URL: http://workspace.local
   JWT_ACCESS_EXPIRES_IN: "15m"
   JWT_REFRESH_EXPIRES_IN: "7d"
   PAYMENT_PROVIDER: mock

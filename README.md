@@ -72,8 +72,8 @@ A production-grade multi-tenant Project Management platform built as a Full Stac
 
 ```bash
 # 1. Clone the repository
-git clone <repo-url>
-cd fullstack-assessment
+git clone https://github.com/peshkash17/multitanant-saas.git
+cd multitanant-saas
 
 # 2. Copy environment files
 cp backend/.env.example backend/.env
@@ -445,6 +445,9 @@ To enable OpenTelemetry tracing: set `OTEL_ENABLED=true` and point `OTEL_EXPORTE
 cd backend
 npm test
 
+# Backend integration tests (Supertest + in-memory/test DB)
+npm run test:e2e
+
 # Backend with coverage
 npm run test:cov
 
@@ -488,14 +491,28 @@ docker compose logs -f backend
 ### Kubernetes Deployment (Bonus)
 
 ```bash
-# Apply manifests
+# 1. Create namespace
 kubectl apply -f k8s/namespace.yaml
+
+# 2. Create secrets (do not commit real values)
+kubectl create secret generic saas-secrets \
+  --namespace saas-workspace \
+  --from-literal=DB_USERNAME=postgres.your-project-ref \
+  --from-literal=DB_PASSWORD=your-db-password \
+  --from-literal=REDIS_PASSWORD=your-redis-password \
+  --from-literal=JWT_SECRET=your-jwt-secret
+
+# 3. Edit k8s/configmap.yaml with your DB/Redis hosts, then apply
 kubectl apply -f k8s/configmap.yaml
-kubectl apply -f k8s/secret.yaml
 kubectl apply -f k8s/backend-deployment.yaml
 kubectl apply -f k8s/frontend-deployment.yaml
 kubectl apply -f k8s/ingress.yaml
 ```
+
+For external PostgreSQL (e.g. Supabase), use the **session pooler** hostname and username format `postgres.<project-ref>` — direct `db.*.supabase.co` hosts may be IPv6-only and fail inside Minikube/Docker.
+
+Docker images are published to GHCR on push to `main`:
+`ghcr.io/peshkash17/multitanant-saas/backend:latest` and `frontend:latest`.
 
 ### Helm Chart (Bonus)
 

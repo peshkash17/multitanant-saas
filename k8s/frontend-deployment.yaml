@@ -6,7 +6,7 @@ metadata:
   labels:
     app: frontend
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: frontend
@@ -17,7 +17,8 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: ghcr.io/your-org/saas-workspace/frontend:latest
+          image: ghcr.io/peshkash17/multitanant-saas/frontend:latest
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 80
           resources:

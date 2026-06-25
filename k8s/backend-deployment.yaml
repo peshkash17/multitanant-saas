@@ -6,7 +6,7 @@ metadata:
   labels:
     app: backend
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: backend
@@ -22,7 +22,11 @@ spec:
     spec:
       containers:
         - name: backend
-          image: ghcr.io/your-org/saas-workspace/backend:latest
+          image: ghcr.io/peshkash17/multitanant-saas/backend:latest
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: NODE_OPTIONS
+              value: "--dns-result-order=ipv4first"
           ports:
             - containerPort: 3000
           envFrom:

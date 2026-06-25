@@ -1,0 +1,71 @@
+global:
+  imageRegistry: ghcr.io
+  imagePullPolicy: IfNotPresent
+
+backend:
+  replicaCount: 2
+  image:
+    repository: your-org/saas-workspace/backend
+    tag: latest
+  service:
+    port: 3000
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+  env:
+    NODE_ENV: production
+    JWT_ACCESS_EXPIRES_IN: "15m"
+    JWT_REFRESH_EXPIRES_IN: "7d"
+    PAYMENT_PROVIDER: mock
+    RLS_AUTO_APPLY: "false"
+    OTEL_ENABLED: "false"
+    FEATURE_PAYMENTS: "true"
+    FEATURE_INVITES: "true"
+    FEATURE_REALTIME: "true"
+    FEATURE_AUDIT_LOGS: "true"
+    FEATURE_RATE_LIMITING: "true"
+
+frontend:
+  replicaCount: 2
+  image:
+    repository: your-org/saas-workspace/frontend
+    tag: latest
+  service:
+    port: 80
+  resources:
+    requests:
+      cpu: 50m
+      memory: 64Mi
+    limits:
+      cpu: 200m
+      memory: 128Mi
+
+postgresql:
+  enabled: false
+  auth:
+    username: postgres
+    password: change-me
+    database: saas_workspace
+
+redis:
+  host: your-redis-host.db.redis.io
+  port: "16396"
+  username: default
+  password: "<set-at-deploy-time>"
+  tls: "false"
+  enabled: false
+  auth:
+    enabled: false
+
+ingress:
+  enabled: true
+  className: nginx
+  host: workspace.example.com
+  tls: []
+
+secrets:
+  jwtSecret: change-this-in-production

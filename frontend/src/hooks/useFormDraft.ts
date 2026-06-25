@@ -10,7 +10,7 @@ export function hasDraftContent(draft: Record<string, unknown>): boolean {
 export function useFormDraft<T extends FieldValues>(
   form: UseFormReturn<T>,
   draftKey: string,
-  isCreateMode: boolean,
+  isCreateMode = true,
 ) {
   const { watch, reset, getValues } = form;
   const isCreateModeRef = useRef(isCreateMode);
